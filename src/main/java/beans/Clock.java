@@ -9,11 +9,16 @@ import java.util.Date;
 @ManagedBean
 @ApplicationScoped
 public class Clock implements Serializable {
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+    SimpleDateFormat timeOnly = new SimpleDateFormat("HH:mm:ss");
+    SimpleDateFormat dateNTime = new SimpleDateFormat("HH:mm:ss dd.MM.yyyy");
     private Date date = new Date();
 
-    public String getDateFormat() {
-        return simpleDateFormat.format(date);
+    public String getTimeOnly() {
+        return timeOnly.format(date);
+    }
+
+    public String getDateNTime() {
+        return dateNTime.format(date);
     }
 
     public Date getDate(){

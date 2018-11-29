@@ -4,33 +4,84 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:H="http://java.sun.com/jsf/html">
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
     <title>Lab3</title>
 </h:head>
 <h:body>
 
 
-    <h:form>
+    <h:form id="pointForm" rendered="true">
         <h:commandLink action="index?faces-redirect=true" value="go to index"/><br />
 
-        Change X:
-
+        <h:outputLabel for="x" value="Change X: "/>
+        <h:inputText id="x" value="#{resTable.newPoint.x}"/>
         <br />
 
-        Change Y:
-        <h:inputText/>
 
+        <h:outputLabel for="y" value="Change Y: "/>
+        <h:inputText id="y" value="#{resTable.newPoint.y}">
+            <f:validator validatorId="model.YValidator" />
+        </h:inputText>
+        <h:message for = "y" style = "color:red" />
         <br />
-        Choose R: <br />
-        <h:commandLink value="Radius = 1"/><br />
-        <h:commandLink value="Radius = 2"/><br />
-        <h:commandLink value="Radius = 3"/><br />
-        <h:commandLink value="Radius = 4"/><br />
-        <h:commandLink value="Radius = 5"/><br />
+        <br />
+        <h:outputLabel for="totalRes" value="Total points checked "/>
+        <h:panelGroup id="totalRes">
+            <h:outputText id="resSize" rendered="#{not empty resTable.results}" value="#{resTable.resLength}"/>
+        </h:panelGroup>
+        <br/>
+
+
+        <h:outputLabel for="curR" value="Change R. Current: "/>
+        <h:panelGroup id="curR">
+            <h:outputText id="r" rendered="#{not empty resTable.results}" value="#{ resTable.results.get(resTable.resLength - 1).r}"/>
+        </h:panelGroup>
+        <br />
+
+
+        <h:commandLink id="r1" value="Radius = 1" action="#{resTable.addPoint}">
+            <f:setPropertyActionListener value="1" target="#{resTable.newPoint.r}" />
+        </h:commandLink><br />
+
+        <h:commandLink id="r2" value="Radius = 2" action="#{resTable.addPoint}">
+            <f:setPropertyActionListener value="2" target="#{resTable.newPoint.r}" />
+        </h:commandLink><br />
+
+        <h:commandLink id="r3" value="Radius = 3" action="#{resTable.addPoint}">
+            <f:setPropertyActionListener value="3" target="#{resTable.newPoint.r}" />
+        </h:commandLink><br />
+
+        <h:commandLink id="r4" value="Radius = 4" action="#{resTable.addPoint}">
+            <f:setPropertyActionListener value="4" target="#{resTable.newPoint.r}" />
+        </h:commandLink><br />
+
+        <h:commandLink id="r5" value="Radius = 5" action="#{resTable.addPoint}">
+            <f:setPropertyActionListener value="5" target="#{resTable.newPoint.r}" />
+        </h:commandLink><br />
 
     </h:form>
 
+    <h:panelGroup id="pointTable">
+        <h:dataTable value="#{resTable.results}" var="point">
+            <h:column>
+                <f:facet name="header">X value</f:facet>
+                #{point.x}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Y value</f:facet>
+                #{point.y}
+            </h:column>
+            <h:column>
+                <f:facet name="header">R value</f:facet>
+                #{point.r}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Result</f:facet>
+                #{point.res}
+            </h:column>
+        </h:dataTable>
+    </h:panelGroup>
 
 </h:body>
 </html>

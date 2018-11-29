@@ -19,14 +19,14 @@
     <h:form>
         <h:commandLink action = "main?faces-redirect=true"  value = "go to main page" />
         <br/>
-        <h:outputText id="timeTextDate" value="#{clock.date}"/>
+        <h:outputText id="timeTextDate" value="#{clock.dateNTime}"/>
     <div class="clock">
         <div class="hourHand"/>
         <div class="minuteHand"/>
         <div class="secondHand"/>
         <div class="center"/>
         <div class="time">
-        <h:outputText id="timeText" value="#{clock.dateFormat}"/>
+        <h:outputText id="timeText" value="#{clock.timeOnly}"/>
         <p:poll interval="6" listener="#{clock.update}" update="timeText timeTextDate"/>
 
         </div>
