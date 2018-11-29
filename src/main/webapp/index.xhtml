@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui" >
+<h:head>
+    <title>Lab3</title>
+    <h:outputStylesheet name="css/clockStyle.css"/>
+    <h:outputScript name="js/tick.js"/>
+</h:head>
+<h:body onload="clockWork('${clock.date.getTime()}')" id="body">
+    <div class="container header">
+        <span id="group"> Группа P3211</span>
+        <span id ="name"> Солдатов И.</span>
+        <span id="variant"> Вариант 21123</span>
+    </div>
+    <h:form>
+        <h:commandLink action = "main?faces-redirect=true"  value = "go to main page" />
+        <br/>
+        <h:outputText id="timeTextDate" value="#{clock.date}"/>
+    <div class="clock">
+        <div class="hourHand"/>
+        <div class="minuteHand"/>
+        <div class="secondHand"/>
+        <div class="center"/>
+        <div class="time">
+        <h:outputText id="timeText" value="#{clock.dateFormat}"/>
+        <p:poll interval="6" listener="#{clock.update}" update="timeText timeTextDate"/>
+
+        </div>
+        <ul>
+            <li><span>1</span></li>
+            <li><span>2</span></li>
+            <li><span>3</span></li>
+            <li><span>4</span></li>
+            <li><span>5</span></li>
+            <li><span>6</span></li>
+            <li><span>7</span></li>
+            <li><span>8</span></li>
+            <li><span>9</span></li>
+            <li><span>10</span></li>
+            <li><span>11</span></li>
+            <li><span>12</span></li>
+        </ul>
+    </div>
+    </h:form>
+</h:body>
+</html>
