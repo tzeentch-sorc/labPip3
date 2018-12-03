@@ -1,27 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ace="http://www.icefaces.org/icefaces/components"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+>
+
 <h:head>
     <title>Lab3</title>
+    <h:outputScript name="jquery-3.3.1.js" library="js"/>
+    <h:outputScript name="js/canvas.js"/>
 </h:head>
-<h:body>
+<h:body onload="draw('#{resTable.newPoint.r}')">
 
 
     <h:form id="pointForm" rendered="true">
         <h:commandLink action="index?faces-redirect=true" value="go to index"/><br />
 
         <h:outputLabel for="x" value="Change X: "/>
-        <h:inputText id="x" value="#{resTable.newPoint.x}"/>
+        <ace:sliderEntry id="x" min="-5" max="5" clickableRail="true" stepPercent="10" showLabels="true" value="#{resTable.newPoint.x}" >
+            <ace:ajax event="slide" render="sliderValX"/>
+        </ace:sliderEntry>
+        <h:outputLabel for="sliderValX" value="Current x value: "/>
+        <h:outputText id="sliderValX" value="#{resTable.newPoint.x}"/>
+        <br/>
+        <h:message id="xMsg" for = "x" style = "color:red" />
         <br />
 
 
         <h:outputLabel for="y" value="Change Y: "/>
-        <h:inputText id="y" value="#{resTable.newPoint.y}">
-            <f:validator validatorId="model.YValidator" />
+        <h:inputText id="y" value="#{resTable.newPoint.y}"
+                     required="true" a:placeholder="Число от -3 до 3." validator="model.YValidator">
+            <ace:ajax render="pointForm"/>
         </h:inputText>
         <h:message for = "y" style = "color:red" />
         <br />
@@ -35,32 +46,38 @@
 
         <h:outputLabel for="curR" value="Change R. Current: "/>
         <h:panelGroup id="curR">
-            <h:outputText id="r" rendered="#{not empty resTable.results}" value="#{ resTable.results.get(resTable.resLength - 1).r}"/>
+            <h:outputText id="r" rendered="true" value="#{ resTable.newPoint.r}"/>
         </h:panelGroup>
         <br />
 
 
-        <h:commandLink id="r1" value="Radius = 1" action="#{resTable.addPoint}">
-            <f:setPropertyActionListener value="1" target="#{resTable.newPoint.r}" />
+        <h:commandLink id="r1" value="Radius = 1" immediate="true" update="canvas curR">
+            <ace:ajax event="action" onComplete="draw(1)" render="pointForm curR canvas" listener="#{resTable.newPoint.setR(1)}"/>
         </h:commandLink><br />
 
-        <h:commandLink id="r2" value="Radius = 2" action="#{resTable.addPoint}">
-            <f:setPropertyActionListener value="2" target="#{resTable.newPoint.r}" />
+        <h:commandLink id="r2" value="Radius = 2" immediate="true" update="canvas curR">
+            <ace:ajax event="action" onComplete="draw(2)" render="pointForm curR canvas" listener="#{resTable.newPoint.setR(2)}"/>
         </h:commandLink><br />
 
-        <h:commandLink id="r3" value="Radius = 3" action="#{resTable.addPoint}">
-            <f:setPropertyActionListener value="3" target="#{resTable.newPoint.r}" />
+        <h:commandLink id="r3" value="Radius = 3" immediate="true" update="canvas curR">
+            <ace:ajax event="action" onComplete="draw(3)" render="pointForm curR canvas" listener="#{resTable.newPoint.setR(3)}"/>
         </h:commandLink><br />
 
-        <h:commandLink id="r4" value="Radius = 4" action="#{resTable.addPoint}">
-            <f:setPropertyActionListener value="4" target="#{resTable.newPoint.r}" />
+        <h:commandLink id="r4" value="Radius = 4" immediate="true" update="canvas curR">
+            <ace:ajax event="action" onComplete="draw(4)" render="pointForm curR canvas" listener="#{resTable.newPoint.setR(4)}"/>
         </h:commandLink><br />
 
-        <h:commandLink id="r5" value="Radius = 5" action="#{resTable.addPoint}">
-            <f:setPropertyActionListener value="5" target="#{resTable.newPoint.r}" />
+        <h:commandLink id="r5" value="Radius = 5" immediate="true" update="canvas curR">
+            <ace:ajax event="action" onComplete="draw(5)" render="pointForm curR canvas" listener="#{resTable.newPoint.setR(5)}"/>
         </h:commandLink><br />
 
+        <ace:pushButton id="sb" type="submit" value="Проверка"
+                            action="#{resTable.addPoint()}" immediate="true">
+            <ace:ajax event="action" execute="pointForm" onComplete="draw(#{resTable.newPoint.getR()})" render="@all"/>
+        </ace:pushButton>
     </h:form>
+
+    <canvas id="canvas" onclick="interactiveCanvas(event)" width="500px" height="500px" />
 
     <h:panelGroup id="pointTable">
         <h:dataTable value="#{resTable.results}" var="point">

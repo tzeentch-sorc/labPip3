@@ -3,10 +3,11 @@ package beans;
 
 import lombok.Data;
 import model.Point;
+import util.Factory;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,15 +15,37 @@ import java.util.List;
 @SessionScoped
 @Data
 public class ResultTableBean {
-    private Point newPoint = new Point();
-    private List<Point> results = new ArrayList<>();
+    private Point newPoint = new Point(1);
+    private List<Point> results = null;
+
+    public List<Point> getResults(){
+        try {
+            return new ArrayList<>(Factory.getInstance().getResRepository().getAllPoints());
+        } catch (SQLException e) {
+            System.out.println("BAD ON GETTING POINTS LIST");
+        }
+        return null;
+    }
+
+    private void initResults() {
+            results = getResults();
+    }
+
     public void addPoint(){
+        initResults();
         check(newPoint);
-        results.add(newPoint);
-        newPoint = new Point();
+        try {
+            Factory.getInstance().getResRepository().addPoint(newPoint);
+        }catch (SQLException e){
+            System.out.println("BAD ON ADDING POINT");
+        }
+
+        newPoint = new Point(newPoint.getR());
     }
 
     public int getResLength(){
+        if(results == null)
+            initResults();
         try {
             return results.size();
         }catch (Exception e){

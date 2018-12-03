@@ -2,6 +2,8 @@ package beans;
 
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,13 +11,8 @@ import java.util.Date;
 @ManagedBean
 @ApplicationScoped
 public class Clock implements Serializable {
-    SimpleDateFormat timeOnly = new SimpleDateFormat("HH:mm:ss");
     SimpleDateFormat dateNTime = new SimpleDateFormat("HH:mm:ss dd.MM.yyyy");
     private Date date = new Date();
-
-    public String getTimeOnly() {
-        return timeOnly.format(date);
-    }
 
     public String getDateNTime() {
         return dateNTime.format(date);
@@ -30,6 +27,6 @@ public class Clock implements Serializable {
     }
 
     public void update(){
-        date = new Date(date.getTime()+6000);
+        this.date = new Date(date.getTime()+6000);
     }
 }

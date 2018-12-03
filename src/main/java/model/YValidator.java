@@ -16,7 +16,7 @@ public class YValidator implements Validator {
     public void validate(FacesContext facesContext, UIComponent uiComponent, Object o) throws ValidatorException {
         try{
             double yVal = (Double) o;
-            if((yVal<-3)||(yVal>3)) throw new InvalidParameterException();
+            if((yVal<=-3)||(yVal>=3)) throw new InvalidParameterException();
         }
         catch (InvalidParameterException e){
             FacesMessage msg =
